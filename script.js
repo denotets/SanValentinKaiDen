@@ -11,9 +11,9 @@
  */
 // Cambiamos la imagen final por la foto proporcionada en la carpeta del proyecto
 // Usamos una ruta relativa para que el navegador la cargue correctamente.
-const finalImageSrc = 'image.png'; // Imagen de la propuesta
+const finalImageSrc = 'assets/image.png'; // Imagen de la propuesta
 const questionText = '¿Quieres ser mi San Valentín?'; // Pregunta principal
-const yesFinalText = '¡Te Amo! Sabía que aceptarías ❤️'; // Mensaje al decir que SÍ
+const yesFinalText = 'Te Amo Sabía que Aceptarías'; // Mensaje al decir que SÍ
 const noPhrases = [
     "¿Estás segura? 🥺",
     "Piénsalo bien... 😔",
@@ -70,7 +70,7 @@ function setupEventListeners() {
 
     // Lógica para el botón NO
     noBtn.addEventListener('mouseenter', moveNoButton);
-    noBtn.addEventListener('click', (e) => {
+    noBtn.addEventListener('pointerdown', (e) => {
         e.preventDefault();
         moveNoButton();
     });
@@ -110,7 +110,50 @@ function showSuccess() {
         successSection.classList.add('active');
         successEl.textContent = yesFinalText;
         startConfetti();
+        startBouncing();
     }, 500);
+}
+
+function startBouncing() {
+    const monito = document.querySelector('.monito-wrapper');
+    if (!monito) return;
+
+    monito.style.position = 'fixed';
+    monito.style.margin = '0';
+
+    let monitoX = Math.random() * (window.innerWidth - 200);
+    let monitoY = Math.random() * (window.innerHeight - 200);
+    let monitoVX = 4;
+    let monitoVY = 4;
+
+    function animate() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            monito.style.position = 'relative';
+            monito.style.margin = '20px auto';
+            return;
+        }
+
+        monitoX += monitoVX;
+        monitoY += monitoVY;
+
+        // Colisión con bordes derecho/izquierdo
+        if (monitoX + monito.offsetWidth >= window.innerWidth || monitoX <= 0) {
+            monitoVX *= -1;
+            monitoX = monitoX <= 0 ? 0 : window.innerWidth - monito.offsetWidth;
+        }
+
+        // Colisión con bordes superior/inferior
+        if (monitoY + monito.offsetHeight >= window.innerHeight || monitoY <= 0) {
+            monitoVY *= -1;
+            monitoY = monitoY <= 0 ? 0 : window.innerHeight - monito.offsetHeight;
+        }
+
+        monito.style.left = monitoX + 'px';
+        monito.style.top = monitoY + 'px';
+
+        requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
 }
 
 function placePiece(piece) {

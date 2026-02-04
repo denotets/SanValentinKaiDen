@@ -1,10 +1,10 @@
 :root {
-    --primary-color: #ff4d6d;
-    --secondary-color: #ff758f;
-    --accent-color: #ffb3c1;
-    --background-start: #fff0f3;
-    --background-end: #ffccd5;
-    --text-color: #590d22;
+    --primary-color: #ff7f50; /* Coral */
+    --secondary-color: #20b2aa; /* Turquesa */
+    --accent-color: #fffacd; /* Amarillo suave */
+    --background-start: #e0f7fa; /* Cielo claro */
+    --background-end: #ffe0b2; /* Arena suave */
+    --text-color: #004d40; /* Verde oscuro para contraste */
     --white: #ffffff;
 }
 
@@ -16,7 +16,7 @@
 
 body {
     font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+    background: linear-gradient(180deg, var(--background-start) 0%, var(--background-end) 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -94,7 +94,7 @@ body {
 
 /* Hidden Sections */
 .hidden {
-    display: none;
+    display: none !important;
     opacity: 0;
     transform: scale(0.9);
 }
@@ -165,13 +165,13 @@ body {
 .yes-btn {
     background-color: var(--primary-color);
     color: var(--white);
-    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    box-shadow: 0 5px 15px rgba(255, 127, 80, 0.4);
 }
 
 .yes-btn:hover {
-    background-color: #ff1a4a;
+    background-color: #ff6347;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+    box-shadow: 0 8px 20px rgba(255, 127, 80, 0.6);
 }
 
 .no-btn {
@@ -227,6 +227,34 @@ body {
     10% { opacity: 0.6; }
     90% { opacity: 0.6; }
     100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Monito Bouncing Container */
+.monito-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+    z-index: 1001;
+}
+
+#monito-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-delay: -1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        background-attachment: initial !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+    }
 }
 
 /* Confetti */
