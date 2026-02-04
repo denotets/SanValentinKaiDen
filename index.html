@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta de San Valentín</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-hearts" id="background-hearts"></div>
+    
+    <main class="container">
+        <!-- Puzzle Section -->
+        <section id="puzzle-section" class="active">
+            <h1 class="title">Arma mi corazón</h1>
+            <div class="puzzle-container" id="puzzle-container">
+                <svg viewBox="0 0 100 100" class="heart-svg" id="heart-svg">
+                    <!-- Ghost heart for reference -->
+                    <path d="M50,30 C35,10 10,15 10,35 C10,55 25,75 50,100 C75,75 90,55 90,35 C90,15 65,10 50,30" class="heart-ghost" />
+                    
+                    <!-- Pieces will be defined here later or via JS if preferred, but plan says define in HTML -->
+                    <path id="piece-1" d="M50,30 C35,10 10,15 10,35 L25,50 Z" class="puzzle-piece" />
+                    <path id="piece-2" d="M50,30 C65,10 90,15 90,35 L75,50 Z" class="puzzle-piece" />
+                    <path id="piece-3" d="M10,35 C10,55 25,75 50,100 L50,70 L25,50 L10,35" class="puzzle-piece" />
+                    <path id="piece-4" d="M90,35 C90,55 75,75 50,100 L50,70 L75,50 L90,35" class="puzzle-piece" />
+                    <path id="piece-5" d="M50,30 L75,50 L50,70 L25,50 Z" class="puzzle-piece" />
+                </svg>
+            </div>
+            <p class="instruction">Haz clic en las piezas para completar el corazón</p>
+        </section>
+
+        <!-- Proposal Section -->
+        <section id="proposal-section" class="hidden">
+            <div class="proposal-card">
+                <h2 id="question-text" class="question">¿Quieres ser mi San Valentín?</h2>
+                <div class="image-container">
+                    <img id="final-image" src="https://via.placeholder.com/300x200?text=Tu+Foto+Aquí" alt="Propuesta">
+                </div>
+                <div class="buttons-container">
+                    <button id="yes-btn" class="btn yes-btn" aria-label="Aceptar propuesta">Sí</button>
+                    <button id="no-btn" class="btn no-btn" aria-label="Rechazar propuesta">No</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Section -->
+        <section id="success-section" class="hidden">
+            <div class="success-card">
+                <h1 id="success-text" class="success-title">Te Amo Sabia que Aceptarías</h1>
+                <div class="celebration-emojis">❤️💖✨🌹</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

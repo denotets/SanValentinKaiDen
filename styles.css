@@ -1,0 +1,273 @@
+:root {
+    --primary-color: #ff4d6d;
+    --secondary-color: #ff758f;
+    --accent-color: #ffb3c1;
+    --background-start: #fff0f3;
+    --background-end: #ffccd5;
+    --text-color: #590d22;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    color: var(--text-color);
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.puzzle-container {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto 30px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.heart-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 5px 15px rgba(255, 77, 109, 0.2));
+    overflow: visible;
+}
+
+.heart-ghost {
+    fill: none;
+    stroke: var(--accent-color);
+    stroke-width: 1;
+    stroke-dasharray: 5, 5;
+    pointer-events: none;
+}
+
+.puzzle-piece {
+    fill: var(--primary-color);
+    stroke: var(--white);
+    stroke-width: 0.5;
+    cursor: pointer;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.puzzle-piece:hover {
+    filter: brightness(1.1);
+}
+
+.puzzle-piece.placed {
+    cursor: default;
+}
+
+.instruction {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    font-weight: 700;
+}
+
+/* Hidden Sections */
+.hidden {
+    display: none;
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.active {
+    display: block;
+    animation: fadeInScale 0.8s forwards ease-out;
+}
+
+@keyframes fadeInScale {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Proposal Section */
+.proposal-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 15px 50px rgba(255, 77, 109, 0.2);
+    border: 3px solid var(--accent-color);
+}
+
+.question {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: var(--primary-color);
+}
+
+.image-container {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 25px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.image-container img {
+    width: 100%;
+    display: block;
+    height: auto;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    height: 60px;
+    align-items: center;
+}
+
+.btn {
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.yes-btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+}
+
+.yes-btn:hover {
+    background-color: #ff1a4a;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
+}
+
+.no-btn {
+    background-color: #e9ecef;
+    color: #6c757d;
+    position: relative;
+    z-index: 100;
+    transition: left 0.15s ease-out, top 0.15s ease-out;
+}
+
+/* Success Section */
+.success-card {
+    background: transparent;
+}
+
+.success-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4rem;
+    color: var(--primary-color);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.celebration-emojis {
+    font-size: 3rem;
+    margin-top: 20px;
+}
+
+/* Background Hearts */
+.background-hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.floating-heart {
+    position: absolute;
+    color: var(--accent-color);
+    opacity: 0.6;
+    animation: float 10s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    font-size: 24px;
+}
+
+@keyframes confettiFall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+    .title {
+        font-size: 2.2rem;
+    }
+
+    .puzzle-container {
+        width: 260px;
+        height: 260px;
+        padding: 10px;
+    }
+
+    .proposal-card {
+        padding: 20px;
+    }
+
+    .question {
+        font-size: 1.8rem;
+    }
+
+    .success-title {
+        font-size: 2.5rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
