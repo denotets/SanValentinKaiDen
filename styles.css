@@ -36,7 +36,7 @@ body {
 
 .title {
     font-family: 'Dancing Script', cursive;
-    font-size: 3rem;
+    font-size: clamp(2rem, 8vw, 3.5rem);
     margin-bottom: 20px;
     color: var(--primary-color);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -47,16 +47,19 @@ body {
     height: 300px;
     margin: 0 auto 30px;
     position: relative;
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .heart-svg {
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0 5px 15px rgba(255, 77, 109, 0.2));
+    filter: drop-shadow(0 5px 15px rgba(255, 77, 109, 0.3));
     overflow: visible;
 }
 
@@ -80,23 +83,28 @@ body {
 
 .puzzle-piece:hover {
     filter: brightness(1.1);
+    stroke-width: 1;
 }
 
 .puzzle-piece.placed {
     cursor: default;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
 }
 
 .instruction {
     font-size: 1.1rem;
     color: var(--secondary-color);
     font-weight: 700;
+    background: rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
 }
 
 /* Hidden Sections */
 .hidden {
     display: none;
     opacity: 0;
-    transform: scale(0.9);
 }
 
 .active {
@@ -105,6 +113,10 @@ body {
 }
 
 @keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
     to {
         opacity: 1;
         transform: scale(1);
@@ -114,32 +126,39 @@ body {
 /* Proposal Section */
 .proposal-card {
     background: var(--white);
-    padding: 40px;
+    padding: clamp(20px, 5vw, 40px);
     border-radius: 30px;
-    box-shadow: 0 15px 50px rgba(255, 77, 109, 0.2);
+    box-shadow: 0 15px 50px rgba(255, 77, 109, 0.3);
     border: 3px solid var(--accent-color);
+    max-width: 100%;
 }
 
 .question {
     font-family: 'Dancing Script', cursive;
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
     margin-bottom: 25px;
     color: var(--primary-color);
 }
 
 .image-container {
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     margin: 0 auto 25px;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 5px solid var(--background-start);
 }
 
 .image-container img {
     width: 100%;
     display: block;
     height: auto;
+    transition: transform 0.5s;
+}
+
+.image-container:hover img {
+    transform: scale(1.05);
 }
 
 .buttons-container {
@@ -147,8 +166,9 @@ body {
     justify-content: center;
     gap: 20px;
     position: relative;
-    height: 60px;
+    min-height: 80px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .btn {
@@ -160,48 +180,64 @@ body {
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Quicksand', sans-serif;
+    outline: none;
 }
 
 .yes-btn {
     background-color: var(--primary-color);
     color: var(--white);
     box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+    z-index: 10;
 }
 
 .yes-btn:hover {
     background-color: #ff1a4a;
-    transform: translateY(-3px);
+    transform: translateY(-3px) scale(1.1);
     box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
 }
 
 .no-btn {
-    background-color: #e9ecef;
+    background-color: #f8f9fa;
     color: #6c757d;
-    position: relative;
-    z-index: 100;
-    transition: left 0.15s ease-out, top 0.15s ease-out;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
 }
 
 /* Success Section */
-.success-card {
-    background: transparent;
-}
-
 .success-title {
     font-family: 'Dancing Script', cursive;
-    font-size: 4rem;
+    font-size: clamp(2rem, 8vw, 4rem);
     color: var(--primary-color);
-    animation: pulse 2s infinite ease-in-out;
+    margin-bottom: 30px;
+    line-height: 1.2;
+    animation: heartBeat 1.5s infinite;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+}
+
+.monito-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+}
+
+#monito-image {
+    max-width: 150px;
+    height: auto;
+    border-radius: 15px;
+    /* El script lo hará fixed después */
 }
 
 .celebration-emojis {
     font-size: 3rem;
     margin-top: 20px;
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
 }
 
 /* Background Hearts */
@@ -223,7 +259,7 @@ body {
 }
 
 @keyframes float {
-    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
     10% { opacity: 0.6; }
     90% { opacity: 0.6; }
     100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
@@ -234,7 +270,6 @@ body {
     position: fixed;
     pointer-events: none;
     z-index: 1000;
-    font-size: 24px;
 }
 
 @keyframes confettiFall {
@@ -244,30 +279,21 @@ body {
 
 /* Responsividad */
 @media (max-width: 480px) {
-    .title {
-        font-size: 2.2rem;
-    }
-
     .puzzle-container {
-        width: 260px;
-        height: 260px;
-        padding: 10px;
+        width: 250px;
+        height: 250px;
     }
 
-    .proposal-card {
-        padding: 20px;
-    }
-
-    .question {
-        font-size: 1.8rem;
-    }
-
-    .success-title {
-        font-size: 2.5rem;
+    .buttons-container {
+        gap: 10px;
     }
 
     .btn {
         padding: 10px 20px;
         font-size: 1rem;
+    }
+
+    #monito-image {
+        max-width: 120px;
     }
 }

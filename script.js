@@ -1,25 +1,15 @@
 /**
- * INSTRUCCIONES DE PERSONALIZACIÓN:
- * 1. finalImageSrc: Cambia la URL por una foto tuya y de tu pareja.
- * 2. questionText: Puedes cambiar la pregunta (ej. "¿Quieres ser mi novia?").
- * 3. yesFinalText: El mensaje que aparece tras aceptar.
- * 4. noPhrases: Lista de frases que rotarán en el botón "No".
- */
-
-/**
  * CONFIGURACIÓN 
  */
-// Cambiamos la imagen final por la foto proporcionada en la carpeta del proyecto
-// Usamos una ruta relativa para que el navegador la cargue correctamente.
-const finalImageSrc = 'image.png'; // Imagen de la propuesta
+const finalImageSrc = 'assets/image.png'; // Imagen de la propuesta
 const questionText = '¿Quieres ser mi San Valentín?'; // Pregunta principal
-const yesFinalText = '¡Te Amo! Sabía que aceptarías ❤️'; // Mensaje al decir que SÍ
+const yesFinalText = 'Te Amo Sabia que Aceptarías'; // Mensaje exacto según requerimiento
 const noPhrases = [
-    "¿Estás segura? 🥺",
-    "Piénsalo bien... 😔",
-    "Me pondré triste... 😭",
+    "¿estás segura?",
+    "me pondré triste si no aceptas",
+    "😔",
+    "Piénsalo bien... 🥺",
     "¡No me hagas esto! 💔",
-    "Mira el perrito triste: 🐶",
     "¿De verdad? 🧐",
     "Anda, di que sí... ✨"
 ];
@@ -28,6 +18,7 @@ const noPhrases = [
 let placedPieces = 0;
 const totalPieces = 5;
 let noClickCount = 0;
+let isAccepted = false;
 
 // Elementos del DOM
 const pieces = document.querySelectorAll('.puzzle-piece');
@@ -39,6 +30,14 @@ const noBtn = document.getElementById('no-btn');
 const questionEl = document.getElementById('question-text');
 const successEl = document.getElementById('success-text');
 const finalImg = document.getElementById('final-image');
+const monitoImg = document.getElementById('monito-image');
+
+// Variables para el rebote del monito
+let monitoX = 50;
+let monitoY = 50;
+let monitoVX = 3;
+let monitoVY = 3;
+let animationFrameId;
 
 function init() {
     scatterPieces();
@@ -49,10 +48,9 @@ function init() {
 function scatterPieces() {
     pieces.forEach(piece => {
         // Generar posiciones aleatorias
-        // Como el viewBox es 100x100, nos movemos en un rango que los disperse
-        const randomX = (Math.random() - 0.5) * 150; // -75 a 75
-        const randomY = (Math.random() - 0.5) * 150; // -75 a 75
-        const randomRotate = (Math.random() - 0.5) * 90; // -45 a 45 grados
+        const randomX = (Math.random() - 0.5) * 150;
+        const randomY = (Math.random() - 0.5) * 150;
+        const randomRotate = (Math.random() - 0.5) * 90;
 
         piece.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${randomRotate}deg)`;
         piece.dataset.placed = "false";
@@ -68,8 +66,29 @@ function setupEventListeners() {
         });
     });
 
-    // Lógica para el botón NO
-    noBtn.addEventListener('mouseenter', moveNoButton);
+    // Lógica evasiva para el botón NO
+    document.addEventListener('mousemove', (e) => {
+        if (proposalSection.classList.contains('active')) {
+            const noBtnRect = noBtn.getBoundingClientRect();
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // Centro del botón
+            const btnCenterX = noBtnRect.left + noBtnRect.width / 2;
+            const btnCenterY = noBtnRect.top + noBtnRect.height / 2;
+
+            // Distancia entre el mouse y el centro del botón
+            const distance = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
+
+            // Radio de evasión (80px-140px)
+            const escapeRadius = 120;
+
+            if (distance < escapeRadius) {
+                moveNoButton();
+            }
+        }
+    });
+
     noBtn.addEventListener('click', (e) => {
         e.preventDefault();
         moveNoButton();
@@ -80,21 +99,19 @@ function setupEventListeners() {
 }
 
 function moveNoButton() {
-    // Cambiar texto
+    // Cambiar texto cíclicamente
     noBtn.textContent = noPhrases[noClickCount % noPhrases.length];
     noClickCount++;
 
-    // Calcular posición aleatoria
-    // Obtener dimensiones de la ventana y el botón
-    const padding = 20;
+    const padding = 50;
     const maxX = window.innerWidth - noBtn.offsetWidth - padding;
     const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-    // Generar coordenadas aleatorias dentro del viewport
-    const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-    const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+    let randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+    let randomY = Math.max(padding, Math.floor(Math.random() * maxY));
 
-    // Aplicar posición fija para que se mueva por toda la pantalla
+    // Evitar que el botón aparezca justo bajo el mouse
+    // (Aproximación simple, si está muy cerca de la posición actual, forzar otra)
     noBtn.style.position = 'fixed';
     noBtn.style.left = randomX + 'px';
     noBtn.style.top = randomY + 'px';
@@ -102,6 +119,7 @@ function moveNoButton() {
 }
 
 function showSuccess() {
+    isAccepted = true;
     proposalSection.classList.remove('active');
     proposalSection.classList.add('hidden');
     
@@ -110,6 +128,7 @@ function showSuccess() {
         successSection.classList.add('active');
         successEl.textContent = yesFinalText;
         startConfetti();
+        initMonitoBounce();
     }, 500);
 }
 
@@ -120,7 +139,7 @@ function placePiece(piece) {
     placedPieces++;
 
     if (placedPieces === totalPieces) {
-        setTimeout(showProposal, 1000);
+        setTimeout(showProposal, 800);
     }
 }
 
@@ -166,12 +185,58 @@ function startConfetti() {
         confetti.style.animationDelay = Math.random() * 2 + 's';
         document.body.appendChild(confetti);
 
-        // Limpiar el DOM después de la animación
         setTimeout(() => {
             confetti.remove();
         }, 5000);
     }
 }
 
-window.addEventListener('DOMContentLoaded', init);
+/**
+ * Lógica del Monito Rebotando (DVD Bounce)
+ */
+function initMonitoBounce() {
+    // Posición inicial aleatoria
+    monitoX = Math.random() * (window.innerWidth - 150);
+    monitoY = Math.random() * (window.innerHeight - 150);
 
+    // Velocidades iniciales
+    monitoVX = (Math.random() > 0.5 ? 1 : -1) * (3 + Math.random() * 2);
+    monitoVY = (Math.random() > 0.5 ? 1 : -1) * (3 + Math.random() * 2);
+
+    monitoImg.style.position = 'fixed';
+    monitoImg.style.zIndex = '999';
+    monitoImg.style.width = '150px'; // Tamaño razonable
+
+    animateMonito();
+}
+
+function animateMonito() {
+    if (!isAccepted) return;
+
+    monitoX += monitoVX;
+    monitoY += monitoVY;
+
+    const imgWidth = monitoImg.offsetWidth;
+    const imgHeight = monitoImg.offsetHeight;
+
+    // Colisión con bordes derecho/izquierdo
+    if (monitoX + imgWidth >= window.innerWidth || monitoX <= 0) {
+        monitoVX *= -1;
+        // Ajustar posición para que no se quede pegado
+        monitoX = monitoX <= 0 ? 0 : window.innerWidth - imgWidth;
+    }
+
+    // Colisión con bordes superior/inferior
+    if (monitoY + imgHeight >= window.innerHeight || monitoY <= 0) {
+        monitoVY *= -1;
+        // Ajustar posición
+        monitoY = monitoY <= 0 ? 0 : window.innerHeight - imgHeight;
+    }
+
+    monitoImg.style.left = monitoX + 'px';
+    monitoImg.style.top = monitoY + 'px';
+
+    animationFrameId = requestAnimationFrame(animateMonito);
+}
+
+window.addEventListener('DOMContentLoaded', init);
