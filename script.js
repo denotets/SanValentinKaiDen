@@ -9,7 +9,9 @@
 /**
  * CONFIGURACIÓN 
  */
-const finalImageSrc = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop'; // URL de la imagen final
+// Cambiamos la imagen final por la foto proporcionada en la carpeta del proyecto
+// Usamos una ruta relativa para que el navegador la cargue correctamente.
+const finalImageSrc = 'image.png'; // Imagen de la propuesta
 const questionText = '¿Quieres ser mi San Valentín?'; // Pregunta principal
 const yesFinalText = '¡Te Amo! Sabía que aceptarías ❤️'; // Mensaje al decir que SÍ
 const noPhrases = [
@@ -172,3 +174,4 @@ function startConfetti() {
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
